@@ -1,0 +1,13 @@
+import { Transfer } from "../generated/USDCContract/USDCContract"
+import { Transfer as TransferEntity } from "../generated/schema"
+
+export function handleTransfer(event: Transfer): void {
+  if (event.params.to.toHex() == "SPECIFIED_ADDRESS") {
+    let transfer = new TransferEntity(event.transaction.hash.toHex())
+    transfer.from = event.params.from
+    transfer.to = event.params.to
+    transfer.value = event.params.value
+    transfer.timestamp = event.block.timestamp
+    transfer.save()
+  }
+}
